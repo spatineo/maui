@@ -157,7 +157,7 @@ public class MauiFilter extends Filter {
 	private int wikipGeneralityIndex = 12; // wikipedia generality
 
 	/**
-	 * Use basic features TFxIDF & First Occurrence
+	 * Use basic features TFxIDF and First Occurrence
 	 */
 	boolean useBasicFeatures = true;
 
@@ -167,12 +167,12 @@ public class MauiFilter extends Filter {
 	boolean useKeyphrasenessFeature = true;
 
 	/**
-	 * Use frequency features TF & IDF additionally
+	 * Use frequency features TF and IDF additionally
 	 */
 	boolean useFrequencyFeatures = true;
 
 	/**
-	 * Use occurrence position features LastOccurrence & Spread
+	 * Use occurrence position features LastOccurrence and Spread
 	 */
 	boolean usePositionsFeatures = true;
 
@@ -495,7 +495,7 @@ public class MauiFilter extends Filter {
 	 *
 	 * @param instance the input instance
 	 * @return true if the filtered instance may now be collected with output().
-	 * @exception Exception if the input instance was not of the correct format
+	 * @throws MauiFilterException if the input instance was not of the correct format
 	 * or if there was a problem with the filtering.
 	 */
 	@SuppressWarnings("unchecked")
@@ -555,7 +555,6 @@ public class MauiFilter extends Filter {
 	 * retrieve the filtered instances.
 	 *
 	 * @return true if there are instances pending output
-	 * @exception Exception if no input structure has been defined
 	 */
 	public boolean batchFinished() throws MauiFilterException {
 
@@ -1238,9 +1237,7 @@ public class MauiFilter extends Filter {
 	 * commonly occurring orgininal version of each candidate in the Candidate
 	 * object.
 	 *
-	 * Returns the total number of words in the document.
-	 *
-	 * @throws Exception
+	 * @return the total number of words in the document.
 	 */
 	public HashMap<String, Candidate> getCandidates(String text) {
 

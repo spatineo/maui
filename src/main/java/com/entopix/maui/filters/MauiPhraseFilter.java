@@ -22,7 +22,7 @@ import weka.core.Capabilities.Capability;
  * A word is a sequence of letters or digits that contains at least one letter,
  * with the following exceptions:
  *
- * a) '.', '@', '_', '&', '/' are allowed if surrounded by letters or digits,
+ * a) '.', '@', '_', '&amp;', '/' are allowed if surrounded by letters or digits,
  *
  * b) '\'' is allowed if preceeded by a letter or digit,
  *

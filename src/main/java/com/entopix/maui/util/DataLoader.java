@@ -22,8 +22,7 @@ public class DataLoader {
     /**
      * Loads model from a file path
      * @param modelPath
-     * @return
-     * @throws ClassNotFoundException 
+     * @return 
      */
     public static MauiFilter loadModel(String modelPath) {
 		BufferedInputStream inStream = null;

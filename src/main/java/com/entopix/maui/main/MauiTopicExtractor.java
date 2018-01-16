@@ -450,7 +450,7 @@ public class MauiTopicExtractor implements OptionHandler {
 	/**
 	 * Loads the documents
 	 * @return
-	 * @throws Exception
+	 * @throws MauiFilterException
 	 */
 	public List<MauiDocument> loadDocuments() throws MauiFilterException {
 		return DataLoader.loadTestDocuments(inputDirectoryName);
