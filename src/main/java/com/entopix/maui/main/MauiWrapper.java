@@ -139,7 +139,7 @@ public final class MauiWrapper {
      * @param text
      * @param topicsPerDocument
      * @return
-     * @throws Exception
+     * @throws MauiFilterException
      */
     public ArrayList<Topic> extractTopicsFromText(String text, int topicsPerDocument) throws MauiFilterException {
 
@@ -284,7 +284,7 @@ public final class MauiWrapper {
      * @param numberOfTopics
      * @return
      * @throws MauiFilterException 
-     * @throws Exception
+     * @throws IOException
      */
     public ArrayList<Topic> extractTopicsFromFile(String filePath, int numberOfTopics) throws IOException, MauiFilterException {
         File documentTextFile = new File(filePath);

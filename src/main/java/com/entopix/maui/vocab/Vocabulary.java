@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Builds an index with the content of the controlled vocabulary.
  * Accepts vocabularies as rdf files (SKOS format) and in plain text format:
- * vocabulary_name.en (with "ID TERM" per line) - descriptors & non-descriptors
+ * vocabulary_name.en (with "ID TERM" per line) - descriptors and non-descriptors
  * vocabulary_name.use (with "ID_NON-DESCR \t ID_DESCRIPTOR" per line)
  * vocabulary_name.rel (with "ID \t RELATED_ID1 RELATED_ID2 ... " per line)
  *
@@ -75,15 +75,13 @@ public class Vocabulary {
 	 * it first checks whether this file exists:<br>
 	 * - vocabularyName.rdf or vocabularyName.rdf.gz if skos format is selected<br>
 	 * - or a set of 3 flat txt files starting with vocabularyName and with extensions<br>
-	 * <li>.en (id term) - the path to this file should be supplied as the main parameters
-	 * <li>.use (non-descriptor \t descriptor)
-	 * <li>.rel (id \t related_id1 related_id2 ...)
+	 * * .en (id term) - the path to this file should be supplied as the main parameters
+	 * * .use (non-descriptor \t descriptor)
+	 * * .rel (id \t related_id1 related_id2 ...)
 	 * If the required files exist, the vocabulary index is built.
 	 *
 	 * @param vocabularyName The name of the vocabulary file (before extension).
 	 * @param vocabularyFormat The format of the vocabulary (skos or text).
-	 * @throws IOException
-	 * @throws VocabularyException 
 	 * */
 	public void initializeVocabulary(String vocabularyName, String vocabularyFormat) {
 
@@ -142,7 +140,6 @@ public class Vocabulary {
 	 *  
 	 * @param vocabularyName The name of the vocabulary file (before extension).
 	 * @param model RDF Model of the SKOS contents of the vocabulary.
-	 * @throws Exception
 	 * */
 	public void initializeVocabulary(String vocabularyName, Model model) throws VocabularyException {
 		this.vocabularyName = vocabularyName;
@@ -340,8 +337,6 @@ public class Vocabulary {
 
 	/**
 	 * Loads the Model from the SKOS file first, then initializes it.
-	 * @throws IOException 
-	 *
 	 */
 	public void initializeFromSKOSFile(File skosFile) {
 
@@ -385,8 +380,6 @@ public class Vocabulary {
 	/**
 	 * Loading data from text files into a Vocabulary Store object for fast access.
 	 * 
-	 * @throws IOException 
-	 *
 	 */
 	public void initializeFromTXTFiles(File enFile, File useFile, File relFile) {
 
@@ -470,7 +463,6 @@ public class Vocabulary {
 
 	/**
 	 * Builds the vocabulary index from the text files.
-	 * @throws IOException 
 	 */
 	public void buildTEXT(File enFile) {
 

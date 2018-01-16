@@ -2,7 +2,7 @@ package com.entopix.maui.stopwords;
 
 /**
  *
- * @author Ignas Kukenys <ignas.kukenys@gmail.com>
+ * @author Ignas Kukenys (ignas.kukenys@gmail.com)
  */
 public class StopwordsFactory {
     
