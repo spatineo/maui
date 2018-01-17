@@ -8,14 +8,18 @@ import org.puimula.libvoikko.Voikko;
 public class FinnishStemmer extends Stemmer {
 	private static final long serialVersionUID = 1L;
 
-	private Voikko voikko;
+	private transient Voikko voikko = null;
 	
 	public FinnishStemmer() {
-		voikko = new Voikko("fi");
+	
 	}
 	
 	@Override
 	public String stem(String str) {
+		if (voikko == null) {
+			voikko = new Voikko("fi");
+		}
+	
 		List<Analysis> analysis = voikko.analyze(str);
 		
 		String stemmed = null;
