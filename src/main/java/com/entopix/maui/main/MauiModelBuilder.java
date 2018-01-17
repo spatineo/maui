@@ -408,14 +408,14 @@ public class MauiModelBuilder implements OptionHandler {
 
 		String stopwordsString = Utils.getOption('s', options);
 		if (stopwordsString.length() > 0) {
-			stopwordsString = "maui.stopwords.".concat(stopwordsString);
+			stopwordsString = "com.entopix.maui.stopwords.".concat(stopwordsString);
 			this.stopwords = (Stopwords) Class.forName(stopwordsString)
 					.newInstance();
 		}
 
 		String stemmerString = Utils.getOption('t', options);
 		if (stemmerString.length() > 0) {
-			stemmerString = "maui.stemmers.".concat(stemmerString);
+			stemmerString = "com.entopix.maui.stemmers.".concat(stemmerString);
 			this.stemmer = (Stemmer) Class.forName(stemmerString).newInstance();
 		}
 		this.serialize = Utils.getFlag('z', options);
