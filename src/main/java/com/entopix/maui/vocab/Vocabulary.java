@@ -19,8 +19,10 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.ResIterator;
 import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
+import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.SKOS;
 import org.slf4j.Logger;
@@ -186,6 +188,8 @@ public class Vocabulary {
 
 		ResIterator iter;
 		Statement stmt;
+		// for some reason Jena doesn't predefine the owl:deprecated property
+		Property owlDeprecated = ResourceFactory.createProperty(OWL.NS, "deprecated");
 
 		// to create IDs for non-descriptors!
 		int count = 0;
@@ -194,6 +198,14 @@ public class Vocabulary {
 
 		while (iter.hasNext()) {
 			Resource concept = iter.nextResource();
+
+			// check whether it's deprecated
+			stmt = concept.getProperty(owlDeprecated);
+			if (stmt != null) {
+				if (stmt.getBoolean() == true) {
+					continue; // skip deprecated concept
+				}
+			}
 
 			// id of the concept (Resource), e.g. "c_4828"
 			String id_string = concept.getURI();
