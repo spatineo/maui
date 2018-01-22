@@ -25,8 +25,6 @@ public class VocabularyStore_Original extends VocabularyStore implements Externa
 	private HashMap<String, String> nonDescriptorIndex = null;
 	/** id -->  list of related ids */
 	private HashMap<String, ArrayList<String>> listsOfRelatedTerms = null;
-	/** id-relatedId --> relation */
-	private HashMap<String, Vocabulary.Relation> relationIndex = null;
 
 
 
@@ -37,7 +35,6 @@ public class VocabularyStore_Original extends VocabularyStore implements Externa
 
 		nonDescriptorIndex = new HashMap<String, String>();
 		listsOfRelatedTerms = new HashMap<String, ArrayList<String>>();
-		relationIndex = new HashMap<String, Vocabulary.Relation>();
 	}
 
 	public void addSense(String descriptor, String id) {
@@ -165,14 +162,6 @@ public class VocabularyStore_Original extends VocabularyStore implements Externa
 			}
 		}
 
-		/** id-relatedId --> relation */
-		out.writeInt(relationIndex.size());
-
-		for (Map.Entry<String, Vocabulary.Relation> e : relationIndex.entrySet()) {
-			out.writeUTF(e.getKey());
-			out.writeObject(e.getValue());
-		}
-
 	}
 
 	public void readExternal(ObjectInput in) throws java.io.IOException, ClassNotFoundException {
@@ -219,16 +208,6 @@ public class VocabularyStore_Original extends VocabularyStore implements Externa
 				relations.add(in.readUTF());
 			}
 			listsOfRelatedTerms.put(term, relations);
-		}
-
-		/** id-relatedId --> relation */
-		size = in.readInt();
-
-		relationIndex = new HashMap<String, Vocabulary.Relation>(size);
-		for (int i = 0; i < size; i++) {
-			String id = in.readUTF();
-			Vocabulary.Relation rel = (Vocabulary.Relation) in.readObject();
-			relationIndex.put(id, rel);
 		}
 
 		finishedInitialized();
