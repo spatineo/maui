@@ -42,8 +42,6 @@ public abstract class VocabularyStore {
 
     public abstract void addRelatedTerm( String term, String relatedTerm );
 
-    public abstract void addRelationship( String id_string, String name, Vocabulary.Relation rel);
-
     public abstract int getNumTerms();
 
     public abstract int getNumNonDescriptors();

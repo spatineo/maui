@@ -112,10 +112,6 @@ public class VocabularyStore_HT extends VocabularyStore implements Externalizabl
 		listsOfRelatedTerms.put(term_id, related_terms);
 	}
 
-	public void addRelationship(String id_string, String name, Vocabulary.Relation rel) {
-		//      relationIndex.put(CantorPairingFunction(createIDFromURI(id_string), createIDFromURI(name)), rel);
-	}
-
 	public int getNumTerms() {
 		return idTermIndex.size();
 	}

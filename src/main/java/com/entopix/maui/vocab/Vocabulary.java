@@ -301,10 +301,6 @@ public class Vocabulary {
 				//						children.get(name).add(id_string);
 				//				}
 
-				vocabStore.addRelationship(id_string, name, rel);
-				if (rel == Relation.kRelationRelated) {
-					vocabStore.addRelationship(name, id_string, rel);
-				}
 			}
 		}
 
