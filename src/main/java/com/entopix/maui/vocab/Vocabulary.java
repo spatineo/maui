@@ -200,11 +200,13 @@ public class Vocabulary {
 
 			// preferred label
 			stmt = concept.getProperty(SKOS.prefLabel, this.language);
-			Literal descriptor = stmt.getLiteral();
-			String descriptorNormalized = normalizePhrase(descriptor.getLexicalForm());
-			if (descriptorNormalized.length() >= 1) {
-				vocabStore.addSense(descriptorNormalized, id_string);
-				vocabStore.addDescriptor(id_string, descriptor.getLexicalForm());
+			if (stmt != null) {
+				Literal descriptor = stmt.getLiteral();
+				String descriptorNormalized = normalizePhrase(descriptor.getLexicalForm());
+				if (descriptorNormalized.length() >= 1) {
+					vocabStore.addSense(descriptorNormalized, id_string);
+					vocabStore.addDescriptor(id_string, descriptor.getLexicalForm());
+				}
 			}
 
 			// alternate and hidden labels
