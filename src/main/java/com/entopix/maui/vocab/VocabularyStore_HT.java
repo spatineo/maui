@@ -24,8 +24,6 @@ public class VocabularyStore_HT extends VocabularyStore implements Externalizabl
 	private HashMap<Integer, Integer> nonDescriptorIndex = null;
 	/** id -->  list of related ids */
 	private HashMap<Integer, ArrayList<Integer>> listsOfRelatedTerms = null;
-	/** id-relatedId --> relation */
-	private HashMap<Long, Vocabulary.Relation> relationIndex = null;
 	private int currentID = 0;
 	private HashMap<String, Integer> URItoIDMap = null;
 	private HashMap<Integer, String> IDtoURIMap = null;
@@ -73,7 +71,6 @@ public class VocabularyStore_HT extends VocabularyStore implements Externalizabl
 
 		nonDescriptorIndex = new HashMap<Integer, Integer>();
 		listsOfRelatedTerms = new HashMap<Integer, ArrayList<Integer>>();
-		relationIndex = new HashMap<Long, Vocabulary.Relation>();
 	}
 
 	public void addSense(String descriptor, String id_string) {
@@ -110,10 +107,6 @@ public class VocabularyStore_HT extends VocabularyStore implements Externalizabl
 		if (!related_terms.contains(idf))
 			related_terms.add(idf);
 		listsOfRelatedTerms.put(term_id, related_terms);
-	}
-
-	public void addRelationship(String id_string, String name, Vocabulary.Relation rel) {
-		//      relationIndex.put(CantorPairingFunction(createIDFromURI(id_string), createIDFromURI(name)), rel);
 	}
 
 	public int getNumTerms() {
@@ -234,15 +227,6 @@ public class VocabularyStore_HT extends VocabularyStore implements Externalizabl
 			}
 		}
 
-		/** id-relatedId --> relation */
-		out.writeInt(relationIndex.size());
-
-		for (Map.Entry<Long, Vocabulary.Relation> e : relationIndex.entrySet()) {
-			out.writeLong(e.getKey());
-			out.writeObject(e.getValue());
-		}
-
-
 		out.writeInt(IDtoURIMap.size());
 
 		for (Map.Entry<Integer, String> e : IDtoURIMap.entrySet()) {
@@ -301,17 +285,6 @@ public class VocabularyStore_HT extends VocabularyStore implements Externalizabl
 			}
 			listsOfRelatedTerms.put(term, relations);
 		}
-
-		/** id-relatedId --> relation */
-		size = in.readInt();
-
-		relationIndex = new HashMap<Long, Vocabulary.Relation>();
-		for (int i = 0; i < size; i++) {
-			Long id = in.readLong();
-			Vocabulary.Relation rel = (Vocabulary.Relation) in.readObject();
-			relationIndex.put(id, rel);
-		}
-
 
 		size = in.readInt();
 

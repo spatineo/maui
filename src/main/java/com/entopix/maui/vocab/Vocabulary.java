@@ -13,13 +13,18 @@ import java.util.zip.GZIPInputStream;
 import com.entopix.maui.stemmers.Stemmer;
 import com.entopix.maui.stopwords.Stopwords;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
+import org.apache.jena.rdf.model.Literal;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.ResIterator;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.ResourceFactory;
+import org.apache.jena.rdf.model.Statement;
+import org.apache.jena.rdf.model.StmtIterator;
+import org.apache.jena.vocabulary.OWL;
+import org.apache.jena.vocabulary.RDF;
+import org.apache.jena.vocabulary.SKOS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,21 +40,6 @@ import org.slf4j.LoggerFactory;
 public class Vocabulary {
 
 	private static final Logger log = LoggerFactory.getLogger(Vocabulary.class);
-
-	public enum Relation {
-
-		kRelationPrefLabel,
-		kRelationAltLabel,
-		kRelationHiddenLabel,
-		kRelationBroader,
-		kRelationNarrower,
-		kRelationComposite,
-		kRelationCompositeOf,
-		kRelationHasTopConcept,
-		kRelationRelated,
-		kRelationNumRelations
-	};
-
 
 	private VocabularyStore vocabStore;
 	private String vocabularyName;
@@ -196,130 +186,67 @@ public class Vocabulary {
 
 		log.info("--- Building the Vocabulary index from the RDF model...");
 
-		StmtIterator iter;
+		ResIterator iter;
 		Statement stmt;
-		Resource concept;
-		Property property;
-		RDFNode value;
-		Relation rel;
+		// for some reason Jena doesn't predefine the owl:deprecated property
+		Property owlDeprecated = ResourceFactory.createProperty(OWL.NS, "deprecated");
 
 		// to create IDs for non-descriptors!
 		int count = 0;
-		// Iterating over all statements in the SKOS file
-		iter = model.listStatements();
+		// Iterating over all concepts in the SKOS file
+		iter = model.listResourcesWithProperty(RDF.type, SKOS.Concept);
 
 		while (iter.hasNext()) {
-			stmt = iter.nextStatement();
+			Resource concept = iter.nextResource();
+
+			// check whether it's deprecated
+			stmt = concept.getProperty(owlDeprecated);
+			if (stmt != null) {
+				if (stmt.getBoolean() == true) {
+					continue; // skip deprecated concept
+				}
+			}
 
 			// id of the concept (Resource), e.g. "c_4828"
-			concept = stmt.getSubject();
 			String id_string = concept.getURI();
 
-
-			// relation or Property of the concept, e.g. "narrower"
-			property = stmt.getPredicate();
-			String relation = property.getLocalName();
-
-			// value of the property, e.g. c_4828 has narrower term "c_4829"
-			value = stmt.getObject();
-			String name = value.toString();
-
-			rel = getRelationForString(relation);
-
-			if (rel == Relation.kRelationPrefLabel) {
-
-				String descriptor, language;
-				int atPosition = name.indexOf('@');
-				if (atPosition != -1) {
-					language = name.substring(atPosition + 1);
-					name = name.substring(0, atPosition);
-					if (language.equals(this.language)) {
-						descriptor = name;
-					} else {
-						continue;
-					}
-
-				} else {
-					descriptor = name;
-				}
-
-				String descriptorNormalized = normalizePhrase(descriptor);
-
+			// preferred label
+			stmt = concept.getProperty(SKOS.prefLabel, this.language);
+			if (stmt != null) {
+				Literal descriptor = stmt.getLiteral();
+				String descriptorNormalized = normalizePhrase(descriptor.getLexicalForm());
 				if (descriptorNormalized.length() >= 1) {
 					vocabStore.addSense(descriptorNormalized, id_string);
-					vocabStore.addDescriptor(id_string, descriptor);
+					vocabStore.addDescriptor(id_string, descriptor.getLexicalForm());
 				}
+			}
 
-			} else if (rel == Relation.kRelationAltLabel
-					|| rel == Relation.kRelationHiddenLabel) {
-
-				String non_descriptor, language;
-
-				int atPosition = name.indexOf('@');
-				if (atPosition != -1) {
-					language = name.substring(atPosition + 1);
-					name = name.substring(0, atPosition);
-					if (language.equals(this.language)) {
-						non_descriptor = name;
-					} else {
-						continue;
+			// alternate and hidden labels
+			Property[] nondescriptorProps = { SKOS.altLabel, SKOS.hiddenLabel };
+			for (Property prop : nondescriptorProps) {
+				StmtIterator statements = concept.listProperties(prop, this.language);
+				while (statements.hasNext()) {
+					stmt = statements.nextStatement();
+					Literal non_descriptor = stmt.getLiteral();
+					String non_descriptorNormalized = normalizePhrase(non_descriptor.getLexicalForm());
+					if (non_descriptorNormalized.length() >= 1) {
+						vocabStore.addSense(non_descriptorNormalized, id_string);
 					}
-
-				} else {
-					non_descriptor = name;
+					addNonDescriptor(count, id_string, non_descriptor.getLexicalForm(), non_descriptorNormalized);
+					count++;
 				}
+			}
 
-
-				String non_descriptorNormalized = normalizePhrase(non_descriptor);
-				if (non_descriptorNormalized.length() >= 1) {
-					vocabStore.addSense(non_descriptorNormalized, id_string);
-				}
-				addNonDescriptor(count, id_string, non_descriptor, non_descriptorNormalized);
-				count++;
-
-			} else if (rel == Relation.kRelationBroader
-					|| rel == Relation.kRelationNarrower
-					|| rel == Relation.kRelationComposite
-					|| rel == Relation.kRelationCompositeOf
-					|| rel == Relation.kRelationHasTopConcept
-					|| rel == Relation.kRelationRelated) {
-
-				// adds directly related term
-				vocabStore.addRelatedTerm(id_string, name);
-
-				//				if (rel == Relation.kRelationNarrower) {
-				//					if (!children.containsKey(id_string)) {
-				//						children.put(id_string, new ArrayList<String>());
-				//					}
-				//					if (!children.get(id_string).contains(name))
-				//						children.get(id_string).add(name);
-				//				} else if (rel == Relation.kRelationBroader) {
-				//					if (!children.containsKey(name)) {
-				//						children.put(name, new ArrayList<String>());
-				//					}
-				//					if (!children.get(name).contains(id_string))
-				//						children.get(name).add(id_string);
-				//				}
-
-				vocabStore.addRelationship(id_string, name, rel);
-				if (rel == Relation.kRelationRelated) {
-					vocabStore.addRelationship(name, id_string, rel);
+			Property[] relationProps = { SKOS.broader, SKOS.narrower, SKOS.related };
+			for (Property prop : relationProps) {
+				StmtIterator statements = concept.listProperties(prop);
+				while (statements.hasNext()) {
+					stmt = statements.nextStatement();
+					// adds directly related term
+					vocabStore.addRelatedTerm(id_string, stmt.getResource().getURI());
 				}
 			}
 		}
-
-		//		// adds indirectly related terms
-		//		for (String id_string : children.keySet()) {
-		//			for (String child1 : children.get(id_string)) {
-		//				for (String child2 : children.get(id_string)) {
-		//					if (!child1.equals(child2)) {
-		//						// adds sibling as related term
-		//						vocabStore.addRelatedTerm(child2, child1);
-		//						vocabStore.addRelatedTerm(child1, child2);
-		//					}
-		//				}
-		//			}	
-		//		}
 
 		log.info("--- Statistics about the vocabulary: ");
 		log.info("\t" + vocabStore.getNumTerms() + " terms in total");
@@ -408,30 +335,6 @@ public class Vocabulary {
 	 */
 	public void setStopwords(Stopwords stopwords) {
 		this.stopwords = stopwords;
-	}
-
-	private Relation getRelationForString(String rel) {
-		if (rel.equals("prefLabel")) {
-			return Relation.kRelationPrefLabel;
-		} else if (rel.equals("altLabel")) {
-			return Relation.kRelationAltLabel;
-		} else if (rel.equals("hiddenLabel")) {
-			return Relation.kRelationHiddenLabel;
-		} else if (rel.equals("broader")) {
-			return Relation.kRelationBroader;
-		} else if (rel.equals("narrower")) {
-			return Relation.kRelationNarrower;
-		} else if (rel.equals("composite")) {
-			return Relation.kRelationComposite;
-		} else if (rel.equals("compositeOf")) {
-			return Relation.kRelationCompositeOf;
-		} else if (rel.equals("hasTopConcept")) {
-			return Relation.kRelationHasTopConcept;
-		} else if (rel.equals("related")) {
-			return Relation.kRelationRelated;
-		}
-
-		return Relation.kRelationNumRelations;
 	}
 
 	public VocabularyStore getVocabularyStore() {
