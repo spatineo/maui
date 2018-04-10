@@ -1,12 +1,14 @@
 # Maui (GPL)
 
-###Summary
+### Summary
+
 Maui automatically identifies main topics in text documents. Depending on the task, topics are tags, keywords, keyphrases, vocabulary terms, descriptors, index terms or titles of Wikipedia articles.
 
-###Demo
-You can try out this live [Maui demo](http://maui-indexer.appspot.com/) by just copying and pasting a piece of text of your choice or uploading a document in Word or PDF format.
+### Demo
 
-###Maui performs the following tasks:
+There used to be a live demo, but that has since stopped working.
+
+### Maui performs the following tasks:
 
 * term assignment with a controlled vocabulary (or thesaurus)
 * subject indexing
