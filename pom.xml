@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<!-- This is a fork of com.entopix/maui -->
 	<groupId>fi.nationallibrary</groupId>
@@ -43,7 +44,7 @@
 		<url>git@github.com:NatLibFi/maui.git</url>
 		<tag>HEAD</tag>
 	</scm>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.version>3.0.3</maven.version>
@@ -52,17 +53,11 @@
 
 	<!-- where it gets uploaded to -->
 	<distributionManagement>
-	   <repository>
-	     <id>nexus.releases</id>
-	     <name>Nexus Releases</name>
-	     <url>http://paja.nls.fi/nexus/content/repositories/releases/</url>
-	   </repository>
-	   <snapshotRepository>
-	     <id>nexus.snapshots</id>
-	     <name>Nexus Snapshots</name>
-	     <url>http://paja.nls.fi/nexus/content/repositories/snapshots/</url>
-	   </snapshotRepository>
-	 </distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -111,7 +106,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.7.6</version>
-			<!-- <scope>test</scope>-->
+			<!-- <scope>test</scope> -->
 		</dependency>
 
 		<dependency>
@@ -131,7 +126,8 @@
 
 	<profiles>
 		<profile>
-			<!-- activate the sonatype profile when a release is being done, which is when you need to sign your build -->
+			<!-- activate the sonatype profile when a release is being done, which 
+				is when you need to sign your build -->
 			<id>sonatype</id>
 			<activation>
 				<property>
@@ -184,7 +180,8 @@
 				</executions>
 			</plugin>
 
-			<!-- the source, javadoc, release-pom you can trigger only when you are releasing by moving them up to the profile above. -->
+			<!-- the source, javadoc, release-pom you can trigger only when you are 
+				releasing by moving them up to the profile above. -->
 
 			<!-- attaches source to the released/installed artifact -->
 			<plugin>
@@ -216,10 +213,8 @@
 				</executions>
 			</plugin>
 
-			<!--
-			* builds a resolved pom that tells us exactly what versions we used for
-			* each release.
-			-->
+			<!-- * builds a resolved pom that tells us exactly what versions we used 
+				for * each release. -->
 			<plugin>
 				<groupId>com.bluetrainsoftware.maven</groupId>
 				<artifactId>release-pom</artifactId>
@@ -259,7 +254,7 @@
 							<version>[3.0.3,)</version>
 						</requireMavenVersion>
 						<requireReleaseDeps>
-							<!--  Don't allow releases with snapshop deps or parents -->
+							<!-- Don't allow releases with snapshop deps or parents -->
 							<message>No Snapshots Allowed!</message>
 							<failWhenParentIsSnapshot>true</failWhenParentIsSnapshot>
 							<searchTransitive>true</searchTransitive>
@@ -292,7 +287,8 @@
 				</configuration>
 			</plugin>
 
-			<!-- ensure we are using the latest compiler plugin and we are targeting JDK 1.8 -->
+			<!-- ensure we are using the latest compiler plugin and we are targeting 
+				JDK 1.8 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
