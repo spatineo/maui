@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<!-- This is a for of com.entopix/maui -->
-	<groupId>com.spatineo</groupId>
+	<!-- This is a fork of com.entopix/maui -->
+	<groupId>fi.nationallibrary</groupId>
 	<artifactId>maui</artifactId>
 	<version>1.3.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
