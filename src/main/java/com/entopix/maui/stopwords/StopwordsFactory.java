@@ -22,8 +22,11 @@ public class StopwordsFactory {
         } else if (languageCode.equals("fr")) {
             return new StopwordsFrench();
             
+        } else if (languageCode.equals("fi")) {
+            return new StopwordsFinnish();
+            
         } else {
-            throw new RuntimeException("Unsupported language code: use one of: de, en, es, fr..");
+            throw new RuntimeException("Unsupported language code: use one of: de, en, es, fr, fi..");
         }
     }
     

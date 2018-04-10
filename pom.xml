@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.entopix</groupId>
+	<!-- This is a for of com.entopix/maui -->
+	<groupId>com.spatineo</groupId>
 	<artifactId>maui</artifactId>
 	<version>1.3.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<url>https://code.google.com/p/maui-indexer/</url>
+	<url>https://github.com/spatineo/maui/</url>
 
 	<developers>
 		<developer>
@@ -14,6 +15,18 @@
 			<id>zelandiya</id>
 			<name>Alyona Medelyan</name>
 			<organization>Entopix Ltd</organization>
+		</developer>
+		<developer>
+			<email>sampo.savolainen@spatineoDOTcom</email>
+			<id>sampov2</id>
+			<name>Sampo Savolainen</name>
+			<organization>Spatineo Inc</organization>
+		</developer>
+		<developer>
+			<email>osma.suominen@helsinkiDOTfi</email>
+			<id>osma</id>
+			<name>Osma Suominen</name>
+			<organization>National Library of Finland</organization>
 		</developer>
 	</developers>
 
@@ -26,9 +39,9 @@
 
 	<!-- will need to fill this in depending on where it eventually goes -->
 	<scm>
-		<connection>scm:git:git@github.com:zelandiya/maui.git</connection>
-		<developerConnection>scm:git:git@github.com:zelandiya/maui.git</developerConnection>
-		<url>git@github.com:zelandiya/maui.git</url>
+		<connection>scm:git:git@github.com:spatineo/maui.git</connection>
+		<developerConnection>scm:git:git@github.com:spatineo/maui.git</developerConnection>
+		<url>git@github.com:spatineo/maui.git</url>
 		<tag>HEAD</tag>
 	</scm>
 	
@@ -40,17 +53,17 @@
 
 	<!-- where it gets uploaded to -->
 	<distributionManagement>
-		<repository>
-			<id>sonatype-staging</id>
-			<name>oss.sonatype.org Staging Repository</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-		<snapshotRepository>
-			<id>sonatype-snapshots</id>
-			<name>oss.sonatype.org Snapshot Repository</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
+	   <repository>
+	     <id>nexus.releases</id>
+	     <name>Nexus Releases</name>
+	     <url>http://paja.nls.fi/nexus/content/repositories/releases/</url>
+	   </repository>
+	   <snapshotRepository>
+	     <id>nexus.snapshots</id>
+	     <name>Nexus Snapshots</name>
+	     <url>http://paja.nls.fi/nexus/content/repositories/snapshots/</url>
+	   </snapshotRepository>
+	 </distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -70,7 +83,13 @@
 			<artifactId>lucene-snowball</artifactId>
 			<version>3.0.3</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>org.puimula.voikko</groupId>
+			<artifactId>libvoikko</artifactId>
+			<version>4.1.1</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.apache.jena</groupId>
 			<artifactId>jena-core</artifactId>
@@ -93,14 +112,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.7.6</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-			<scope>test</scope>
+			<!-- <scope>test</scope>-->
 		</dependency>
 
 		<dependency>

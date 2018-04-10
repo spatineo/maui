@@ -85,11 +85,28 @@ public class Vocabulary {
 			}
 
 			File skosFile = new File(vocabularyName);
-			if (!skosFile.exists()) {
+			
+			
+			try {
+				if (!skosFile.exists()) {
+					InputStream resourceStream = Vocabulary.class.getClassLoader().getResourceAsStream(vocabularyName);
+					
+					if (resourceStream == null) {
+						throw new IOException("No such file or resource");
+					} else {
+						if (vocabularyName.endsWith(".gz")) {
+							resourceStream = new GZIPInputStream(resourceStream);
+						}
+					}
+					initializeFromStream(resourceStream);
+				} else {
+					initializeFromSKOSFile(skosFile);
+				}
+				
+			} catch(Exception ie) {
 				log.error("Error while loading vocabulary from " + vocabularyName);
-				throw new RuntimeException(skosFile.getAbsolutePath() + " does not exist!");
+				throw new RuntimeException("Error while loading vocabulary from "+vocabularyName, ie);
 			}
-			initializeFromSKOSFile(skosFile);
 
 		} else if (vocabularyFormat.equals("text")) {
 
@@ -265,7 +282,7 @@ public class Vocabulary {
 	/**
 	 * Loads the Model from the SKOS file first, then initializes it.
 	 */
-	public void initializeFromSKOSFile(File skosFile) {
+	public void initializeFromSKOSFile(File skosFile) throws IOException {
 
 		if (serialize) {
 			vocabStore = VocabularyStoreFactory.CreateVocabStore(vocabularyName, stemmer, serialize);
@@ -282,23 +299,42 @@ public class Vocabulary {
 			initializeFromModel(model);
 		}
 	}
+	
+	public void initializeFromStream(InputStream stream) throws IOException {
 
-	private Model readModelFromFile(File skosFile) {
-		log.info("--- Loading RDF model from the SKOS file...");
-		Model model = ModelFactory.createDefaultModel();
-		InputStream stream;
-		try {
-			
-			if (skosFile.getName().endsWith("rdf.gz")) {
-					stream = new GZIPInputStream(new FileInputStream(skosFile));
+		if (serialize) {
+			vocabStore = VocabularyStoreFactory.CreateVocabStore(vocabularyName, stemmer, serialize);
+
+			// we already have a de-serialized vocabStore
+			if (vocabStore.isInitialized()) {
+				return;
 			} else {
-				stream = new FileInputStream(skosFile);
+				Model model = readModelFromInputStream(stream);
+				initializeFromModel(model);
 			}
-			model.read(new InputStreamReader(stream, encoding), "");
-		} catch (IOException e) {
-			log.error("Error while loading vocabulary model from " + skosFile.getAbsolutePath() + "!\n", e);
-			throw new RuntimeException();
+		} else {
+			Model model = readModelFromInputStream(stream);
+			initializeFromModel(model);
 		}
+	}
+
+	private Model readModelFromFile(File skosFile) throws IOException {
+		log.info("--- Loading RDF model from the SKOS file...");
+		InputStream stream;
+		
+		if (skosFile.getName().endsWith("rdf.gz")) {
+			stream = new GZIPInputStream(new FileInputStream(skosFile));
+		} else {
+			stream = new FileInputStream(skosFile);
+		}
+		
+		return readModelFromInputStream(stream);
+		
+	}
+	
+	private Model readModelFromInputStream(InputStream stream) throws IOException {
+		Model model = ModelFactory.createDefaultModel();
+		model.read(new InputStreamReader(stream, encoding), "");
 		return model;
 	}
 
