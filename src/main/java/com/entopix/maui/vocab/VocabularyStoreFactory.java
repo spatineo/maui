@@ -57,10 +57,10 @@ public class VocabularyStoreFactory {
 
         try {
         	vocab_store = (VocabularyStore) preferredClassType.newInstance();
-            vocab_store.setVocabularyName(vocabularyName);
-        } catch (InstantiationException ex) {
-        } catch (IllegalAccessException ex) {
+        } catch (InstantiationException | IllegalAccessException ex) {
+        	throw new IllegalArgumentException("Could not create instance of preferred class type ("+preferredClassType+")", ex);
         }
+        vocab_store.setVocabularyName(vocabularyName);
 
         return vocab_store;
     }
