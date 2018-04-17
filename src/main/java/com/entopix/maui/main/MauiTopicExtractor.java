@@ -21,8 +21,6 @@ import com.entopix.maui.util.MauiDocument;
 import com.entopix.maui.util.MauiTopics;
 import com.entopix.maui.util.Topic;
 import com.entopix.maui.vocab.Vocabulary;
-import com.entopix.maui.vocab.VocabularyStoreFactory;
-import com.entopix.maui.vocab.VocabularyStore_HT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -619,7 +617,6 @@ public class MauiTopicExtractor implements OptionHandler {
 	public static void main(String[] ops) {
 
 		MauiTopicExtractor topicExtractor = new MauiTopicExtractor();
-		VocabularyStoreFactory.setPrefferedVocabStoreType(VocabularyStore_HT.class);
 
 		try {
 			// Checking and Setting Options selected by the user:

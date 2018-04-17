@@ -194,7 +194,7 @@ public class Vocabulary {
 	 */
 	public void initializeFromModel(Model model) {
 
-		vocabStore = VocabularyStoreFactory.CreateVocabStore(vocabularyName, stemmer, serialize);
+		vocabStore = VocabularyStoreFactory.createVocabStore(vocabularyName, stemmer, serialize);
 
 		// we already have a de-serialized vocabStore
 		if (vocabStore.isInitialized()) {
@@ -273,7 +273,7 @@ public class Vocabulary {
 		vocabStore.finishedInitialized();
 
 		if (serialize) {
-			VocabularyStoreFactory.SerializeNewVocabStore(vocabularyName, vocabStore, stemmer);
+			VocabularyStoreFactory.serializeNewVocabStore(vocabularyName, vocabStore, stemmer);
 		}
 	}
 
@@ -285,7 +285,7 @@ public class Vocabulary {
 	public void initializeFromSKOSFile(File skosFile) throws IOException {
 
 		if (serialize) {
-			vocabStore = VocabularyStoreFactory.CreateVocabStore(vocabularyName, stemmer, serialize);
+			vocabStore = VocabularyStoreFactory.createVocabStore(vocabularyName, stemmer, serialize);
 
 			// we already have a de-serialized vocabStore
 			if (vocabStore.isInitialized()) {
@@ -303,7 +303,7 @@ public class Vocabulary {
 	public void initializeFromStream(InputStream stream) throws IOException {
 
 		if (serialize) {
-			vocabStore = VocabularyStoreFactory.CreateVocabStore(vocabularyName, stemmer, serialize);
+			vocabStore = VocabularyStoreFactory.createVocabStore(vocabularyName, stemmer, serialize);
 
 			// we already have a de-serialized vocabStore
 			if (vocabStore.isInitialized()) {
@@ -346,7 +346,7 @@ public class Vocabulary {
 	 */
 	public void initializeFromTXTFiles(File enFile, File useFile, File relFile) {
 
-		vocabStore = VocabularyStoreFactory.CreateVocabStore(vocabularyName, stemmer, serialize);
+		vocabStore = VocabularyStoreFactory.createVocabStore(vocabularyName, stemmer, serialize);
 
 		// we already have a de-serialized vocabStore
 		if (vocabStore.isInitialized()) {
@@ -361,7 +361,7 @@ public class Vocabulary {
 		vocabStore.finishedInitialized();
 
 		if (serialize) {
-			VocabularyStoreFactory.SerializeNewVocabStore(vocabularyName, vocabStore, stemmer);
+			VocabularyStoreFactory.serializeNewVocabStore(vocabularyName, vocabStore, stemmer);
 		}
 	}
 

@@ -23,22 +23,20 @@ public class VocabularyStoreFactory {
     private static final Logger log = LoggerFactory.getLogger(VocabularyStoreFactory.class);
 
     @SuppressWarnings("rawtypes")
-	private static Class preferredClassType = VocabularyStore_Original.class;
-
-    public static void setPrefferedVocabStoreType(@SuppressWarnings("rawtypes") Class preffered_type) {
-        // test whether that class type provided is really a VocabularyStore
-        if (VocabularyStore.class.isAssignableFrom(preffered_type))
-            preferredClassType = preffered_type;
+    public static final Class DEFAULT_VOCABULARY_CLASS = VocabularyStore_HT.class;
+    
+    private static String filenameForVocabulary(String vocabularyName, Stemmer stemmer, @SuppressWarnings("rawtypes") Class vocabularyClass) {
+        return vocabularyName + "_" + vocabularyClass.getName() + "_" + stemmer.getClass().getSimpleName() + ".serialized";
     }
 
-    private static String filenameForVocabulary(String vocabularyName, Stemmer stemmer) {
-        return vocabularyName + "_" + preferredClassType.getName() + "_" + stemmer.getClass().getSimpleName() + ".serialized";
+    public static VocabularyStore createVocabStore(String vocabularyName, Stemmer stemmer, boolean serialize) {
+    	return createVocabStore(vocabularyName, stemmer, serialize, DEFAULT_VOCABULARY_CLASS);
     }
-
-    public static VocabularyStore CreateVocabStore(String vocabularyName, Stemmer stemmer, boolean serialize) {
+    
+    public static VocabularyStore createVocabStore(String vocabularyName, Stemmer stemmer, boolean serialize, @SuppressWarnings("rawtypes")Class vocabularyClass) {
         VocabularyStore vocab_store = null;
         if (serialize) {
-	        String filename = filenameForVocabulary(vocabularyName, stemmer);
+	        String filename = filenameForVocabulary(vocabularyName, stemmer, vocabularyClass);
         	log.info("Deserializing vocabulary from " + filename);
 	        try {
 	            FileInputStream fis = new FileInputStream(filename);
@@ -56,21 +54,21 @@ public class VocabularyStoreFactory {
         }
 
         try {
-        	vocab_store = (VocabularyStore) preferredClassType.newInstance();
+        	vocab_store = (VocabularyStore) vocabularyClass.newInstance();
         } catch (InstantiationException | IllegalAccessException ex) {
-        	throw new IllegalArgumentException("Could not create instance of preferred class type ("+preferredClassType+")", ex);
+        	throw new IllegalArgumentException("Could not create instance of class type ("+vocabularyClass+")", ex);
         }
         vocab_store.setVocabularyName(vocabularyName);
 
         return vocab_store;
     }
 
-    public static void SerializeNewVocabStore(String vocabularyName, VocabularyStore vocabStore, Stemmer stemmer) {
+    public static void serializeNewVocabStore(String vocabularyName, VocabularyStore vocabStore, Stemmer stemmer) {
         if (!vocabStore.getWantsSerialization()) {
             return;
         }
         log.info("Serializing loaded vocabulary");
-        String filename = filenameForVocabulary(vocabularyName, stemmer);
+        String filename = filenameForVocabulary(vocabularyName, stemmer, vocabStore.getClass());
         try {
             FileOutputStream fos = new FileOutputStream(filename);
             ObjectOutputStream out = new ObjectOutputStream(fos);

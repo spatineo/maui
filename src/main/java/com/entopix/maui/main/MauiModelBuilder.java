@@ -35,8 +35,6 @@ import com.entopix.maui.stopwords.StopwordsEnglish;
 import com.entopix.maui.util.DataLoader;
 import com.entopix.maui.util.MauiDocument;
 import com.entopix.maui.vocab.Vocabulary;
-import com.entopix.maui.vocab.VocabularyStoreFactory;
-import com.entopix.maui.vocab.VocabularyStore_HT;
 import com.entopix.maui.wikifeatures.WikiFeatures;
 
 import org.slf4j.Logger;
@@ -617,7 +615,6 @@ public class MauiModelBuilder implements OptionHandler {
 	public static void main(String[] ops) {
 
 		MauiModelBuilder modelBuilder = new MauiModelBuilder();
-		VocabularyStoreFactory.setPrefferedVocabStoreType(VocabularyStore_HT.class);
 
 		try {
 
