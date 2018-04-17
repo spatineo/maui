@@ -5,7 +5,7 @@
 	<!-- This is a fork of com.entopix/maui -->
 	<groupId>fi.nationallibrary</groupId>
 	<artifactId>maui</artifactId>
-	<version>1.3.1-SNAPSHOT</version>
+	<version>1.4.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<url>https://github.com/NatLibFi/maui/</url>
