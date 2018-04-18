@@ -281,6 +281,8 @@
 					<tagBase>release/${project.groupId}/</tagBase>
 					<pushChanges>false</pushChanges>
 					<localCheckout>true</localCheckout>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<useReleaseProfile>false</useReleaseProfile>
 				</configuration>
 			</plugin>
 
