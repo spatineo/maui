@@ -10,8 +10,15 @@ For more in-depth information, follow the guides: http://central.sonatype.org/pa
 
 ## Deploy snapshot to Sonatype
 
+```shell
 mvn clean deploy
+```
 
 ## Deploy a release
 
+```shell
+mvn clean
+mvn -DperformRelease=true release:prepare
+mvn -DperformRelease=true release:perform
+```
 
