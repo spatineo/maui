@@ -17,6 +17,8 @@ mvn clean deploy
 
 ## Deploy a release
 
+This has been tested to work with Maven 3.5.2
+
 ```shell
 mvn clean
 mvn release:prepare
