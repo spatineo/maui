@@ -23,3 +23,11 @@ mvn release:prepare
 mvn release:perform
 ```
 
+If the release:perform phase fails for some reason, run the following commands before attempting the next release.
+
+```shell
+mvn release:rollback
+git tag -d :maui-[version]
+```
+
+
