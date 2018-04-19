@@ -184,9 +184,6 @@
 				</executions>
 			</plugin>
 
-			<!-- the source, javadoc, release-pom you can trigger only when you are 
-				releasing by moving them up to the profile above. -->
-
 			<!-- attaches source to the released/installed artifact -->
 			<plugin>
 				<artifactId>maven-source-plugin</artifactId>
@@ -215,82 +212,6 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-
-			<!-- * builds a resolved pom that tells us exactly what versions we used 
-				for * each release. -->
-			<plugin>
-				<groupId>com.bluetrainsoftware.maven</groupId>
-				<artifactId>release-pom</artifactId>
-				<version>1.5</version>
-				<executions>
-					<execution>
-						<id>generate-dep-list</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>release-pom</goal>
-						</goals>
-						<configuration>
-							<useMaven2>false</useMaven2>
-							<outputFile>${project.build.outputDirectory}/META-INF/maven/released-pom.xml</outputFile>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-
-
-			<!-- needed to make sure Git is used correctly at release -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-scm-plugin</artifactId>
-				<version>1.9</version>
-			</plugin>
-
-			<!-- ensure certain rules are in place when we release -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>1.2</version>
-				<configuration>
-					<rules>
-						<requireMavenVersion>
-							<version>[3.0.3,)</version>
-						</requireMavenVersion>
-						<requireReleaseDeps>
-							<!-- Don't allow releases with snapshop deps or parents -->
-							<message>No Snapshots Allowed!</message>
-							<failWhenParentIsSnapshot>true</failWhenParentIsSnapshot>
-							<searchTransitive>true</searchTransitive>
-						</requireReleaseDeps>
-						<!-- Don't allow accidental inclusion of commons logging or log4j -->
-						<bannedDependencies>
-							<excludes>
-								<exclude>commons-logging</exclude>
-								<exclude>commons-logging-api</exclude>
-							</excludes>
-						</bannedDependencies>
-					</rules>
-					<fail>true</fail>
-				</configuration>
-			</plugin>
-
-			<!-- configure the release plugin -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.5</version>
-				<configuration>
-					<mavenExecutorId>forked-path</mavenExecutorId>
-					<arguments>-Dmaui.release=release</arguments>
-					<preparationGoals>clean enforcer:enforce verify</preparationGoals>
-					<goals>enforcer:enforce deploy</goals>
-					<tagBase>release/${project.groupId}/</tagBase>
-					<pushChanges>false</pushChanges>
-					<localCheckout>true</localCheckout>
-					<autoVersionSubmodules>true</autoVersionSubmodules>
-					<useReleaseProfile>false</useReleaseProfile>
-				</configuration>
 			</plugin>
 
 			<!-- ensure we are using the latest compiler plugin and we are targeting 
