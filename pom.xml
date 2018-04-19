@@ -48,8 +48,7 @@
 		<connection>scm:git:git://github.com/NatLibFi/maui.git</connection>
 		<developerConnection>scm:git:git@github.com:NatLibFi/maui.git</developerConnection>
 		<url>http://github.com/NatLibFi/maui/tree/master</url>
-	  <tag>HEAD</tag>
-  </scm>
+	</scm>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
