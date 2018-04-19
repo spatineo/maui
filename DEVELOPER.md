@@ -19,7 +19,7 @@ mvn clean deploy
 
 ```shell
 mvn clean
-mvn -DperformRelease=true release:prepare
-mvn -DperformRelease=true release:perform
+mvn release:prepare
+mvn release:perform
 ```
 
