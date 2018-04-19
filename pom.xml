@@ -8,6 +8,13 @@
 	<version>1.4.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
+	<name>Maui</name>
+	<description>
+		Maui automatically identifies main topics in text documents. Depending on the task,
+		topics are tags, keywords, keyphrases, vocabulary terms, descriptors, index terms or
+		titles of Wikipedia articles.
+	</description>
+
 	<url>https://github.com/NatLibFi/maui/</url>
 
 	<developers>
