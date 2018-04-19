@@ -23,11 +23,12 @@ mvn release:prepare
 mvn release:perform
 ```
 
-If the release:perform phase fails for some reason, run the following commands before attempting the next release.
+If the release:perform phase fails for some reason, run the following commands before attempting the next release. Note, these instructions are untested and it is possible that release:rollback removes the tags.
 
 ```shell
 mvn release:rollback
-git tag -d :maui-[version]
+git tag -d maui-[version]
+git push origin :maui-[version]
 ```
 
 
