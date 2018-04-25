@@ -5,10 +5,13 @@ import org.tartarus.snowball.ext.swedishStemmer;
 public class SwedishStemmer extends Stemmer {
 	private static final long serialVersionUID = 1L;
 	
-	private swedishStemmer snowball = new swedishStemmer();
+	private transient swedishStemmer snowball;
 	
 	@Override
 	public String stem(String str) {
+		if (snowball == null) {
+			snowball = new swedishStemmer();
+		}
 		snowball.setCurrent(str);
 		snowball.stem();
 		return snowball.getCurrent();
