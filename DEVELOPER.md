@@ -9,6 +9,20 @@ Prerequisites:
 
 For more in-depth information, follow the guides: http://central.sonatype.org/pages/ossrh-guide.html and http://central.sonatype.org/pages/apache-maven.html
 
+## Testing and voikko
+
+This version of Maui uses the [voikko](https://voikko.puimula.org) library for stemming Finnish. The actual stemmer is a binary library that needs to be installed in the OS for the FinnishStemmer to work. 
+
+```shell
+sudo apt install libvoikko1
+```
+
+If you need to compile this module without the voikko library, you will run into problems with tests not completing. You can run maven using the no-voikko profile to complete the build without running the tests that use the FinnishStemmer,
+
+```shell
+mvn clean install -Pno-voikko
+```  
+
 ## Deploy snapshot to Sonatype
 
 ```shell
