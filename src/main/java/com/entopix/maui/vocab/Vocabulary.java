@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
 
+import com.entopix.maui.filters.MauiPhraseFilter;
 import com.entopix.maui.stemmers.Stemmer;
 import com.entopix.maui.stopwords.Stopwords;
 
@@ -569,6 +570,8 @@ public class Vocabulary {
 		if (orig.endsWith("-") || orig.endsWith(".")) {
 			return orig;
 		}
+		MauiPhraseFilter filter = new MauiPhraseFilter();
+		phrase = filter.tokenize(phrase).replace('\n', ' ');
 		StringBuilder result = new StringBuilder();
 		char prev = ' ';
 		int i = 0;
