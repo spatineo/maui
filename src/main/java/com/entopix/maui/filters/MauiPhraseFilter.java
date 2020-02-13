@@ -22,7 +22,7 @@ import weka.core.Capabilities.Capability;
  * A word is a sequence of letters or digits that contains at least one letter,
  * with the following exceptions:
  *
- * a) '.', '@', '_', '&amp;', '/' are allowed if surrounded by letters or digits,
+ * a) '.', '@', '_', '&amp;', '-', '/' are allowed if surrounded by letters or digits,
  *
  * b) '\'' is allowed if preceeded by a letter or digit,
  *
@@ -307,7 +307,7 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
                     j++;
                 } else if ((!m_DisallowInternalPeriods && (ch == '.'))
                         || (ch == '@') || (ch == '_') || (ch == '&')
-                        || (ch == '/') || (ch == '\'')) {
+                        || (ch == '/') || (ch == '\'') || (ch == '-')) {
                     if ((j > 0) && (j + 1 < text.length())
                             && Character.isLetterOrDigit(text.charAt(j - 1))
                             && Character.isLetterOrDigit(text.charAt(j + 1))) {
