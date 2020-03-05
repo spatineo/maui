@@ -570,6 +570,8 @@ public class Vocabulary {
 		if (orig.endsWith("-") || orig.endsWith(".")) {
 			return orig;
 		}
+		// strip parenthetical qualifiers e.g. "bank (finance)" -> "bank"
+		phrase = phrase.replaceAll("\\s+\\(.*\\)$", "");
 		MauiPhraseFilter filter = new MauiPhraseFilter();
 		phrase = filter.tokenize(phrase).replace('\n', ' ');
 		StringBuilder result = new StringBuilder();
@@ -628,7 +630,7 @@ public class Vocabulary {
 			// to prevent cases where the term is a stop word (e.g. Back).
 			return result.toString();
 		} else {
-			// log.info(orig + " >> " + phrase);
+			log.info(orig + " >> " + phrase);
 			return phrase;
 		}
 	}
