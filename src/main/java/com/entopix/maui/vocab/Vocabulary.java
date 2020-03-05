@@ -630,7 +630,7 @@ public class Vocabulary {
 			// to prevent cases where the term is a stop word (e.g. Back).
 			return result.toString();
 		} else {
-			log.info(orig + " >> " + phrase);
+			// log.info(orig + " >> " + phrase);
 			return phrase;
 		}
 	}
