@@ -19,12 +19,12 @@ import com.entopix.maui.stemmers.Stemmer;
  * @author nathanholmberg, zelandiya
  */
 public class VocabularyStoreFactory {
-    
+
     private static final Logger log = LoggerFactory.getLogger(VocabularyStoreFactory.class);
 
     @SuppressWarnings("rawtypes")
-    public static final Class DEFAULT_VOCABULARY_CLASS = VocabularyStore_HT.class;
-    
+    public static final Class DEFAULT_VOCABULARY_CLASS = VocabularyStore_Original.class;
+
     private static String filenameForVocabulary(String vocabularyName, Stemmer stemmer, @SuppressWarnings("rawtypes") Class vocabularyClass) {
         return vocabularyName + "_" + vocabularyClass.getName() + "_" + stemmer.getClass().getSimpleName() + ".serialized";
     }
@@ -32,7 +32,7 @@ public class VocabularyStoreFactory {
     public static VocabularyStore createVocabStore(String vocabularyName, Stemmer stemmer, boolean serialize) {
     	return createVocabStore(vocabularyName, stemmer, serialize, DEFAULT_VOCABULARY_CLASS);
     }
-    
+
     public static VocabularyStore createVocabStore(String vocabularyName, Stemmer stemmer, boolean serialize, @SuppressWarnings("rawtypes")Class vocabularyClass) {
         VocabularyStore vocab_store = null;
         if (serialize) {
