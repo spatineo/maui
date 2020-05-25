@@ -42,6 +42,7 @@ public class VocabularyStore_HT extends VocabularyStore implements Externalizabl
 		} else if (prefix_current.equals(conceptURIPrefix)) {
 			in = in.substring(prefix_current.length());
 		} else {
+			in = "<" + in + ">";
 			// log.info("Not saving anything by cutting off prefix?");
 		}
 
@@ -61,7 +62,11 @@ public class VocabularyStore_HT extends VocabularyStore implements Externalizabl
 	}
 
 	public String createURIFromID(Integer id) {
-		return conceptURIPrefix + IDtoURIMap.get(id);
+		String localName = IDtoURIMap.get(id);
+		if (localName.startsWith("<")) {
+			return localName.substring(1, localName.length()-1);
+		}
+		return conceptURIPrefix + localName;
 	}
 
 	public VocabularyStore_HT() {
