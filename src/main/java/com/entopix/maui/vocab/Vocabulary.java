@@ -569,6 +569,8 @@ public class Vocabulary {
 		if (orig.endsWith("-") || orig.endsWith(".")) {
 			return orig;
 		}
+		// strip parenthetical qualifiers e.g. "bank (finance)" -> "bank"
+		phrase = phrase.replaceAll("\\s+\\(.*\\)$", "");
 		StringBuilder result = new StringBuilder();
 		char prev = ' ';
 		int i = 0;
