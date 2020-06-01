@@ -169,12 +169,7 @@ public class VocabularyStore_HT extends VocabularyStore implements Externalizabl
 					continue;
 				}
 				if (!senses.contains(senseId)) {
-					// if ambiguous sense, check if there's a nonambiguous one.
-					// helps with LCSHs!
-					String nonambig = idTermIndex.get(senseId);
-					if (nonambig.indexOf('(') == -1) {
-						senses.add(senseId);
-					}
+					senses.add(senseId);
 				}
 			}
 		}
