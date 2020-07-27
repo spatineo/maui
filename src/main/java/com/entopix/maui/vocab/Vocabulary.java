@@ -231,7 +231,7 @@ public class Vocabulary {
 			stmt = concept.getProperty(SKOS.prefLabel, this.language);
 			if (stmt != null) {
 				Literal descriptor = stmt.getLiteral();
-				String descriptorNormalized = normalizePhrase(descriptor.getLexicalForm());
+				String descriptorNormalized = normalizeTerm(descriptor.getLexicalForm());
 				if (descriptorNormalized.length() >= 1) {
 					vocabStore.addSense(descriptorNormalized, id_string);
 					vocabStore.addDescriptor(id_string, descriptor.getLexicalForm());
@@ -245,7 +245,7 @@ public class Vocabulary {
 				while (statements.hasNext()) {
 					stmt = statements.nextStatement();
 					Literal non_descriptor = stmt.getLiteral();
-					String non_descriptorNormalized = normalizePhrase(non_descriptor.getLexicalForm());
+					String non_descriptorNormalized = normalizeTerm(non_descriptor.getLexicalForm());
 					if (non_descriptorNormalized.length() >= 1) {
 						vocabStore.addSense(non_descriptorNormalized, id_string);
 					}
@@ -418,7 +418,7 @@ public class Vocabulary {
 				int i = readline.indexOf(' ');
 				term = readline.substring(i + 1);
 	
-				avterm = normalizePhrase(term);
+				avterm = normalizeTerm(term);
 	
 				if (avterm.length() >= 1) {
 					id_string = readline.substring(0, i);
@@ -555,6 +555,16 @@ public class Vocabulary {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Generates the pseudo phrase from a vocabulary term.
+	 * Strips parenthetical qualifiers, then normalizes the remainder
+	 * using normalizePhrase.
+	 */
+	public String normalizeTerm(String term) {
+		// strip parenthetical qualifiers e.g. "bank (finance)" -> "bank"
+		return normalizePhrase(term.replaceAll("\\s+\\(.*\\)$", ""));
 	}
 
 	/**
